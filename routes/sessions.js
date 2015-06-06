@@ -16,7 +16,7 @@ router.post('/', function(req, res, next){
 
   models.User.findOne({where: {name: name}}).then(function(user){
     if(user && user.password == md5(password)) {
-        res.cookie('user_key', user.id + "-" +  user.password).end;
+      res.cookie('user_key', user.id + "-" +  user.password, {maxAge: 1000 * 60 * 60 * 24 * 365}).end();
     } else {
       res.status(403).end();
     }
