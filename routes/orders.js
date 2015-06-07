@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var models  = require('../models');
+var moment = require('moment');
+
+var user_service = require('../services/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -22,16 +25,23 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next){
   var product_id = req.body.product_id;
-
-  //@todo 取当前登录用户id
-  var user_id = 1;
-  //@todo 检查当天是否点过餐
-  models.Order.create({
-    product_id: product_id,
-    user_id: user_id,
-  }).then(function(order){
-    res.json({id: order.id});
-  });
+  var day = moment().format("YYYY-MM-DD");
+  user_service
+    .get_current_user(req)
+    .then(function(user){
+      if (user) {
+        //@todo 检查今天是否下了单
+        models.Order.create({
+          product_id: product_id,
+          user_id: user.id,
+          day: day
+        }).then(function(order){
+          res.json({id: order.id});
+        });
+      } else {
+        res.status(403).end();
+      };
+    });
 });
 
 module.exports = router;
