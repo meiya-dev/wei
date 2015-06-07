@@ -1,0 +1,21 @@
+{
+  "name": "wei",
+  "version": "0.0.0",
+  "homepage": "https://github.com/meiya-dev/wei",
+  "authors": [
+    "juhua"
+  ],
+  "description": "喂美芽儿",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "semantic-ui": "~1.12.3",
+    "react": "~0.13.3"
+  }
+}
