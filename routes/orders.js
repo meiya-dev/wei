@@ -28,13 +28,23 @@ router.post('/', function(req, res, next){
   var day = moment().format("YYYY-MM-DD");
   user_service.get_current_user(req)
     .then(function(user){
-        //@todo 检查今天是否下了单
-      models.Order.create({
-        product_id: product_id,
-        user_id: user.id,
-        day: day
-      }).then(function(order){
-        res.json({id: order.id});
+      models.Order.findAll({
+        where: {
+          user_id: user.id,
+          day: day,
+        }
+      }).then(function(orders){
+        if (orders.length > 0) {
+          res.status(403).send("喂！你今天已经点过了哦").end();
+        } else {
+          models.Order.create({
+            product_id: product_id,
+            user_id: user.id,
+            day: day
+          }).then(function(order){
+            res.json({id: order.id});
+          });
+        };
       });
     })
     .catch(function(){
