@@ -93,7 +93,6 @@
 		url: '/orders',
 		_$modal: $('.feedback.modal'),
 		_orders: function (type, param) {
-			var self = this;
 
 			if (typeof type === 'object') {
 				param = type;
@@ -107,7 +106,7 @@
 				dataType: 'json'
 			}).always(function (res) {
 				status = res.status;
-				var $modal = self._$modal;
+				var $modal = this._$modal;
 				var $content = $modal.find('.content');
 				if (status !== 200) {
 					$content.text(res.responseText);
