@@ -16,7 +16,7 @@ module.exports.get_current_user = function(req) {
         resolve(data);
       })
     } else {
-      resolve(null);
+      reject();
     };
   })
 };

@@ -26,22 +26,20 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next){
   var product_id = req.body.product_id;
   var day = moment().format("YYYY-MM-DD");
-  user_service
-    .get_current_user(req)
+  user_service.get_current_user(req)
     .then(function(user){
-      if (user) {
         //@todo 检查今天是否下了单
-        models.Order.create({
-          product_id: product_id,
-          user_id: user.id,
-          day: day
-        }).then(function(order){
-          res.json({id: order.id});
-        });
-      } else {
-        res.status(403).end();
-      };
-    });
+      models.Order.create({
+        product_id: product_id,
+        user_id: user.id,
+        day: day
+      }).then(function(order){
+        res.json({id: order.id});
+      });
+    })
+    .catch(function(){
+      res.status(403).send("未登录").end();
+    })
 });
 
 module.exports = router;
