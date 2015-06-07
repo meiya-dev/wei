@@ -21,10 +21,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next){
-  var user_id = req.query.user_id;
-  var product_id = req.query.product_id;
+  var product_id = req.body.product_id;
 
   //@todo 取当前登录用户id
+  var user_id = 1;
   //@todo 检查当天是否点过餐
   models.Order.create({
     product_id: product_id,
