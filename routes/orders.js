@@ -7,20 +7,23 @@ var user_service = require('../services/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  //@todo 权限验证
-  var user_id = req.query.user_id;
   var day = req.query.day;
+  user_service.get_current_user(req)
+    .then(function(user){
+      var where = {user_id: user.id};
+      if (day) {
+        where.day = day;
+      };
 
-  var where = {user_id: user_id};
-  if (day) {
-    where.day = day;
-  };
-
-  models.Order.findAll({
-    where: where
-  }).then(function(orders){
-    res.json(orders);
-  });
+      models.Order.findAll({
+        where: where
+      }).then(function(orders){
+        res.json(orders);
+      });
+    })
+    .catch(function(){
+      res.status(403).send("未登录").end();
+    })
 });
 
 router.post('/', function(req, res, next){
