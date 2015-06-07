@@ -10,12 +10,20 @@
 	app.sales = {
 		url: '/sales',
 		data: [],
-		_sales: function (type) {
-			return $.ajax({
+		_sales: function (type, data) {
+
+			var param = {
 				url: this.url,
 				type: type || 'get',
 				dataType: 'json'
-			}).done(function (res) {
+			};
+
+			if (data && typeof data === 'object') {
+				param.data = data;
+			}
+
+			return $.ajax(param)
+			.done(function (res) {
 				this.data = res;
 			}.bind(this))
 		},
@@ -24,14 +32,6 @@
 			var self = this;
 
 			var Item = React.createClass({
-				confirm: function (e) {
-					var data = this.props.data;
-					var id = data.Product.id;
-
-					app.orders._orders({
-						product_id: id
-					});
-				},
 				render: function () {
 					return (
 						<div className="item">
@@ -43,19 +43,13 @@
 						  <div className="description">
 						    <p>暂无详情</p>
 						  </div>
-						  <div className="extra">
-						    <div className="ui right floated primary button small"
-						    onClick={this.confirm}>
-						      点餐
-						    </div>
-						  </div>
 						</div>
 						</div>
 					)
 				}
 			});
 
-			var Sales = React.createClass({
+			var Sales = self.Sales = React.createClass({
 				getInitialState: function () {
 					return {
 						data: self.data
@@ -90,28 +84,48 @@
 		}
 	};
 
-	app.orders = {
-		url: '/orders',
-		_orders: function (type, param) {
+	app.add = function () {
 
-			if (typeof type === 'object') {
-				param = type;
-				type = null;
+		var that = this;
+
+		var Add = React.createClass({
+			handleClickAdd: function () {
+				$('.add.modal').modal('show');
+			},
+			render: function () {
+				return (
+					<div className="fluid ui button primary" 
+					onClick={this.handleClickAdd}>
+					{this.props.text}</div>
+				)
 			}
+		});
 
-			return $.ajax({
-				url: this.url,
-				type: type || 'post',
-				data: param,
-				dataType: 'json'
-			}).done(function (res) {
-				$('.feedback.modal').modal('show');
-			}.bind(this))
-		}
+		React.render(
+			<Add text='添加新菜色'/>,
+			document.getElementById('J_Add')
+		);
+
+		$('.add.modal').modal({
+			onApprove: function () {
+				var $this = $(this);
+				var val = $this.find('#J_ProductName').val();
+
+				if (val) {
+					that.sales._sales('post', {
+						product_name: val
+					}).done(function () {
+						that.sales.init()
+					})
+				}
+			}
+		});
+
 	};
 
 	app.init = function () {
 		this.sales.init();
+		this.add();
 	};
 
 	app.init();

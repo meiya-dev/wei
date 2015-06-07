@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+  div(class='container')
+    h2 当前菜单
+    div(id='J_Add' style='margin-bottom: 1rem')
+    div(id='J_Sales')
+
+  div(class='ui modal small add')
+    i(class='close icon')
+    div(class='header') 添加新菜色
+    div(class='content')
+        div(class='ui input fluid')
+            input(id='J_ProductName' type='text' placeholder='菜品名')
+    div(class='actions')
+        div(class='ui positive right button') 确定
+
+  script(type='text/jsx' src='/javascripts/add.js')
+
