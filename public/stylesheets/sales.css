@@ -12,7 +12,7 @@ body
     height: 100%;
 }
 
-.orders
+.sales
 {
     overflow: auto;
 
@@ -21,7 +21,7 @@ body
     padding: 1rem;
 }
 
-.container.with-bottom .orders
+.container.with-bottom .sales
 {
     padding-bottom: 5rem;
 }
