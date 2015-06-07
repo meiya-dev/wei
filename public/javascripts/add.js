@@ -24,7 +24,6 @@
 
 			return $.ajax(param)
 			.done(function (res) {
-				this.data = res;
 			}.bind(this))
 		},
 		render: function () {
@@ -78,7 +77,8 @@
 		},
 		init: function () {
 			this._sales()
-			.done(function () {
+			.done(function (res) {
+				this.data = res.reverse();
 				this.render();
 			}.bind(this));
 		}
@@ -117,8 +117,9 @@
 					}).done(function () {
 						that.sales.init()
 					})
+				} else {
+					return false
 				}
-				return false
 			}
 		});
 
