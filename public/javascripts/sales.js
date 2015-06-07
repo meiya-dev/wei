@@ -91,7 +91,9 @@
 
 	app.orders = {
 		url: '/orders',
+		_$modal: $('.feedback.modal'),
 		_orders: function (type, param) {
+			var self = this;
 
 			if (typeof type === 'object') {
 				param = type;
@@ -103,8 +105,16 @@
 				type: type || 'post',
 				data: param,
 				dataType: 'json'
-			}).done(function (res) {
-				$('.feedback.modal').modal('show');
+			}).always(function (res) {
+				status = res.status;
+				var $modal = self._$modal;
+				var $content = $modal.find('.content');
+				if (status !== 200) {
+					$content.text(res.responseText);
+				} else {
+					$content.text('点餐成功');
+				}
+				$modal.modal('show');
 			}.bind(this))
 		}
 	};
