@@ -15,7 +15,9 @@
 				data: param,
 				dataType: 'json'
 			}).always(function (res) {
-				if (res.status === 200) {}
+				if (res.status === 200) {
+					location.href = '/';
+				}
 			}.bind(this))
 		},
 		render: function () {
@@ -45,6 +47,7 @@
 				},
 				render: function () {
 					return (
+						<form action="javascript:;" onSubmit={this.handleSubmit}>
 						<div className="ui form">
 							<div className="field">
 								<input type="text" placeholder="用户名" 
@@ -56,9 +59,10 @@
 								value={this.state.password} 
 								onChange={this.handleChangePassword}/>
 							</div>
-							<button className="ui button fluid primary" 
-							onClick={this.handleSubmit}>登录</button>
+							<button type="submit" className="ui button fluid primary">
+							登录</button>
 						</div>
+						</form>
 					)
 				}
 			});

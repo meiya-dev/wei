@@ -1,5 +1,16 @@
 extends layout
 
 block content
-  h1 喂美芽儿
-  p 好好吃饭
+
+  link(rel='stylesheet', href='/stylesheets/sales.css')
+
+  div(class='container')
+    div(id='J_Sales', class='sales')
+
+  div(class='ui modal feedback')
+    i(class='close icon')
+    div(class='header') 温馨提示
+    div(class='content') 点餐成功
+
+  script(type='text/jsx' src='/javascripts/sales.js')
+
