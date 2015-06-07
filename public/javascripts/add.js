@@ -118,6 +118,7 @@
 						that.sales.init()
 					})
 				}
+				return false
 			}
 		});
 

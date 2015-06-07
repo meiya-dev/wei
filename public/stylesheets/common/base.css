@@ -9,6 +9,12 @@ body
 {
     position: relative;
 
+    box-sizing: border-box;
     height: 100%;
     padding: 1rem;
+}
+
+.login
+{
+    padding: .5rem;
 }

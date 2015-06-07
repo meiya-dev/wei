@@ -38,7 +38,6 @@
 						<div className="content">
 						  <div className="header">{this.props.data.Product.name}</div>
 						  <div className="meta">
-						    <span className="price">¥5</span>
 						  </div>
 						  <div className="description">
 						    <p>暂无详情</p>
