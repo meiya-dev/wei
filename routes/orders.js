@@ -7,24 +7,15 @@ var user_service = require('../services/user');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  var day = req.query.day;
-  user_service.get_current_user(req)
-    .then(function(user){
-      if (user == null) {
-        res.status(403).send("未登录").end();
-      } else {
-        var where = {user_id: user.id};
-        if (day) {
-          where.day = day;
-        };
-
-        models.Order.findAll({
-          where: where
-        }).then(function(orders){
-          res.json(orders);
-        });
-      };
-    });
+  var day = req.query.day ? req.query.day : moment().format("YYYY-MM-DD");
+  models.Order.findAll({
+    where: {day: day},
+    include: [
+      {model: models.Product}
+    ]
+  }).then(function(orders){
+    res.json(orders);
+  });
 });
 
 router.post('/', function(req, res, next){
