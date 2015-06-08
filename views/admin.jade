@@ -3,8 +3,9 @@ extends layout
 block content
 
   div(class='container')
-    h2 当前菜单
-    div(id='J_Add' style='margin-bottom: 1rem')
+    h2 菜单管理
+    div(id='J_AddBtn' style='margin-bottom: 1rem')
+    div(id='J_OrdersBtn' style='margin-bottom: 1rem')
     div(id='J_Sales')
 
   div(class='ui modal small add')
@@ -16,5 +17,10 @@ block content
     div(class='actions')
         div(class='ui positive right button') 确定
 
-  script(type='text/jsx' src='/javascripts/add.js')
+  div(class='ui modal small orders')
+    i(class='close icon')
+    div(class='header') 今日订单
+    div(id='J_Orders' class='content') 加载中
+
+  script(type='text/jsx' src='/javascripts/admin.js')
 

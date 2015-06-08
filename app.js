@@ -12,7 +12,7 @@ var sales = require('./routes/sales');
 var sessions = require('./routes/sessions');
 
 var login = require('./routes/login');
-var add = require('./routes/add');
+var admin = require('./routes/admin');
 
 var app = express();
 
@@ -34,7 +34,7 @@ app.use('/orders', orders);
 app.use('/sales', sales);
 app.use('/sessions', sessions);
 app.use('/login', login);
-app.use('/add', add);
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

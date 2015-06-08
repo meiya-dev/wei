@@ -36,9 +36,6 @@
 						<div className="item">
 						<div className="content">
 						  <div className="header">{this.props.data.Product.name}</div>
-						  <div className="meta">
-						    <span className="price">¥5</span>
-						  </div>
 						  <div className="description">
 						    <p>暂无详情</p>
 						  </div>
@@ -84,6 +81,95 @@
 		}
 	};
 
+	app.orders = {
+		url: '/orders',
+		_$modal: $('.orders.modal'),
+		_orders: function () {
+			return $.ajax({
+				url: this.url,
+				type: 'get',
+				dataType: 'json'
+			})
+		},
+		countOrders: function (data) {
+			var _counts = {};
+			var ret = [];
+			data.map(function (item, index) {
+				var product = item.Product;
+				var name = product.name;
+				if (!_counts[name]) {
+					_counts[name] = 0;
+				}
+				_counts[name]++
+			});
+
+			for (var key in _counts) {
+				ret.push({
+					name: key,
+					count: _counts[key]
+				});
+			}
+
+			return ret;
+		},
+		listRender: function (res, dom) {
+
+			var List = React.createClass({
+				getInitialState: function () {
+					return {
+						data: res
+					}
+				},
+				render: function () {
+					return (
+						<div>
+						{
+							this.state.data.map(function (item) {
+								return (<div>{item.name} x {item.count}</div>);
+							})
+						}
+						</div>
+					);
+				}
+			});
+
+			React.render(
+				<List />,
+				dom
+			);
+		},
+		btnRender: function () {
+
+			var self = this;
+			var $modal = self._$modal;
+
+			var Orders = React.createClass({
+				handleClickOrders: function () {
+					$modal.modal('show');
+					self._orders().done(function (res) {
+						self.listRender(self.countOrders(res), $modal.find('#J_Orders')[0]);
+					})
+				},
+				render: function () {
+					return (
+						<div className="fluid ui button green" 
+						onClick={this.handleClickOrders}>
+						{this.props.text}</div>
+					)
+				}
+			});
+
+			React.render(
+				<Orders text='查看今日订单'/>,
+				document.getElementById('J_OrdersBtn')
+			);
+
+		},
+		init: function () {
+			this.btnRender();
+		}
+	};
+
 	app.add = function () {
 
 		var that = this;
@@ -103,7 +189,7 @@
 
 		React.render(
 			<Add text='添加新菜色'/>,
-			document.getElementById('J_Add')
+			document.getElementById('J_AddBtn')
 		);
 
 		$('.add.modal').modal({
@@ -127,6 +213,7 @@
 
 	app.init = function () {
 		this.sales.init();
+		this.orders.init();
 		this.add();
 	};
 
