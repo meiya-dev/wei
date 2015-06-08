@@ -10,20 +10,21 @@ router.get('/', function(req, res, next) {
   var day = req.query.day;
   user_service.get_current_user(req)
     .then(function(user){
-      var where = {user_id: user.id};
-      if (day) {
-        where.day = day;
-      };
+      if (user == null) {
+        res.status(403).send("未登录").end();
+      } else {
+        var where = {user_id: user.id};
+        if (day) {
+          where.day = day;
+        };
 
-      models.Order.findAll({
-        where: where
-      }).then(function(orders){
-        res.json(orders);
-      });
-    })
-    .catch(function(){
-      res.status(403).send("未登录").end();
-    })
+        models.Order.findAll({
+          where: where
+        }).then(function(orders){
+          res.json(orders);
+        });
+      };
+    });
 });
 
 router.post('/', function(req, res, next){
@@ -31,27 +32,28 @@ router.post('/', function(req, res, next){
   var day = moment().format("YYYY-MM-DD");
   user_service.get_current_user(req)
     .then(function(user){
-      models.Order.findAll({
-        where: {
-          user_id: user.id,
-          day: day,
-        }
-      }).then(function(orders){
-        if (orders.length > 0) {
-          res.status(403).send("喂！你今天已经点过了哦").end();
-        } else {
-          models.Order.create({
-            product_id: product_id,
+      if (user == null) {
+        res.status(403).send("未登录").end();
+      } else {
+        models.Order.findAll({
+          where: {
             user_id: user.id,
-            day: day
-          }).then(function(order){
-            res.json({id: order.id});
-          });
-        };
-      });
-    })
-    .catch(function(){
-      res.status(403).send("未登录").end();
+            day: day,
+          }
+        }).then(function(orders){
+          if (orders.length > 0) {
+            res.status(403).send("喂！你今天已经点过了哦").end();
+          } else {
+            models.Order.create({
+              product_id: product_id,
+              user_id: user.id,
+              day: day
+            }).then(function(order){
+              res.json({id: order.id});
+            });
+          };
+        });
+      }
     })
 });
 
