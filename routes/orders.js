@@ -21,9 +21,9 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next){
   //只能11点前点餐
   var hour = moment().format('H');
-  if (hour > 11) {
-    return res.status(403).send("喂！现在过了点餐时间了哦，早干嘛去了呢！必须要11点前点餐！！！").end();
-  };
+  // if (hour > 11) {
+  //   return res.status(403).send("喂！现在过了点餐时间了哦，早干嘛去了呢！必须要11点前点餐！！！").end();
+  // };
 
   var product_id = req.body.product_id;
   var day = moment().format("YYYY-MM-DD");
