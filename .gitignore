@@ -31,3 +31,5 @@ bower_components
 
 # static file for dev
 public/static
+
+.DS_Store
