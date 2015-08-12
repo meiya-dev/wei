@@ -114,18 +114,27 @@
 		},
 		listRender: function (res, dom) {
 
+			var self = this;
+
 			var List = React.createClass({
 				getInitialState: function () {
 					return {
-						data: res
+						data: res,
+						counts: self.countOrders(res)
 					}
 				},
 				render: function () {
 					return (
-						<div>
+						<div style={{maxHeight: '300px',overflowY: 'auto'}}>
+						{
+							this.state.counts.map(function (item) {
+								return (<div>{item.name} x {item.count}</div>);
+							})
+						}
+						{<br/>}
 						{
 							this.state.data.map(function (item) {
-								return (<div>{item.name} x {item.count}</div>);
+								return (<div>{item.User.name} 点了 {item.Product.name}</div>);
 							})
 						}
 						</div>
@@ -147,7 +156,7 @@
 				handleClickOrders: function () {
 					$modal.modal('show');
 					self._orders().done(function (res) {
-						self.listRender(self.countOrders(res), $modal.find('#J_Orders')[0]);
+						self.listRender(res, $modal.find('#J_Orders')[0]);
 					})
 				},
 				render: function () {
