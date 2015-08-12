@@ -11,6 +11,7 @@ var models = require("../models");
 
 models.Sale.belongsTo(models.Product, {foreignKey: "product_id"});
 models.Order.belongsTo(models.Product, {foreignKey: "product_id"});
+models.Order.belongsTo(models.User, {foreignKey: "user_id"});
 
 /**
  * Get port from environment and store in Express.

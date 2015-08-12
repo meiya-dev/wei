@@ -11,7 +11,8 @@ router.get('/', function(req, res, next) {
   models.Order.findAll({
     where: {day: day},
     include: [
-      {model: models.Product}
+      {model: models.Product},
+      {model: models.User}
     ]
   }).then(function(orders){
     res.json(orders);
